@@ -4,8 +4,8 @@ import pandas as pd
 import altair as alt
 
 
-def init_population(nb_ind, nb_gen, nb_alleles):
-    df = pd.DataFrame(index=np.arange(nb_gen), columns=np.arange(nb_alleles))
+def init_population(nb_ind, nb_gen):
+    df = pd.DataFrame(index=np.arange(nb_gen), columns=np.arange(nb_ind))
     df = df.fillna(0.0)
     df.iloc[0, :] = 1.0/(nb_ind)
 
@@ -60,18 +60,13 @@ nb_gen = col1.number_input(
     value=1000
 )
 
-nb_alleles = col1.number_input(
-    "Number of alleles",
-    min_value=1,
-    max_value=100,
-    value=10
-)
+
 
 col2.header("Genetic Drift Simulation Results")
 
-pop = init_population(nb_ind, nb_gen, nb_alleles)
+pop = init_population(nb_ind, nb_gen)
 pop = drift(pop, nb_ind)
-#chart = alt.Chart(pop).mark_line()
+
 
 pop.index.name = "generation"
 data = pop.reset_index().melt('generation')
